@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Un hotel!!</title>
+</head>
+<body th:object="${hotel}">
+
+  <h2>Details: </h2>
+
+  <div>
+    <p>id: <span th:text="*{id}">5</span></p>
+    <p>nom: <span th:text="*{nom}">nom de l'hotel</span></p>
+    <p>adresse: <span th:text="*{adresse}">adresse de l'hotel</span></p>
+    <p>nombre d'étoiles: <span th:text="*{nbrEtoiles}">5</span></p>
+
+    <div>
+      <h3>Les chambres</h3>
+<!-- /*     <th:block th:replace="~{ chambre/addForm :: form(*{id}) }"></th:block> */ -->
+
+      <form action="#"  th:action="@{ /hotel/add-room }" method="post" th:object="${roomForm}">
+
+        <div>
+          <label for="in-lit">nombre de lits:</label>
+          <input type="number" min="1" max="10" name="in-lit" id="in-lit" th:field="*{nbrLits}">
+        </div>
+
+        <p th:if="${ #fields.hasErrors('nbrLits') }" th:errors="*{nbrLits}">vous avez fait des erreurs</p>
+
+        <input type="hidden" name="in-hotel-id" th:field="*{hotelId}">
+
+        <button type="submit">envoyer</button>
+
+      </form>
+      
+      <ul>
+        <li th:each="c : *{chambres}" th:object="${c}">
+          <p> id: <th:block th:text="*{id}"></th:block> </p>
+          <p> nombre de lits: <th:block th:text="*{nbrLit}"></th:block> </p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <a th:href="@{ /hotel/{id}/update (id=*{id}) }">update</a>
+  <a th:href="@{ /hotel/all }">retour</a>
+
+</body>
+</html>
